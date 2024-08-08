@@ -1,0 +1,31 @@
+import pandas as pd
+import os
+import glob
+
+# Configuration
+input_dir = '../bike_data/journeys_data/original_journeys_data'  # Directory containing the large CSV files
+output_dir = '../bike_data/journeys_data/chunked_journeys_data'  # Directory to save the smaller files
+chunk_size = 100000  # Number of rows per chunk
+
+# Ensure the output directory exists
+os.makedirs(output_dir, exist_ok=True)
+
+# Find all CSV files in the input directory
+csv_files = glob.glob(os.path.join(input_dir, '*.csv'))
+
+# Split each input file into chunks
+for input_file in csv_files:
+    file_base = os.path.splitext(os.path.basename(input_file))[0]
+    chunk_iter = pd.read_csv(input_file, chunksize=chunk_size)
+
+    for i, chunk in enumerate(chunk_iter):
+        output_file = os.path.join(output_dir, f'{file_base}_part_{i+1}.csv')
+
+        # Check if the output file already exists
+        if not os.path.exists(output_file):
+            chunk.to_csv(output_file, index=False)
+            print(f'Saved {output_file}')
+        else:
+            print(f'File {output_file} already exists. Skipping...')
+
+print('CSV splitting completed.')
