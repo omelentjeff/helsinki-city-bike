@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "stations")
@@ -26,4 +27,10 @@ public class Station {
 
     @Column(name = "city")
     private String city;
+
+    @OneToMany(mappedBy = "departureStation")
+    private List<Journey> departingJourneys;
+
+    @OneToMany(mappedBy = "returnStation")
+    private List<Journey> returningJourneys;
 }
