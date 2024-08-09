@@ -25,11 +25,16 @@ public class Journey {
     @Column(name = "return")
     private LocalDateTime returnTime;
 
-    @OneToMany(mappedBy = "departureStation")
-    private List<Journey> departingJourneys;
-    
-    @OneToMany(mappedBy = "returnStation")
-    private List<Journey> returningJourneys;
+    // Many journeys can depart from the same station
+    @ManyToOne
+    @JoinColumn(name = "departure_station_id", referencedColumnName = "id")
+    private Station departureStation;
+
+    // Many journeys can return to the same station
+    @ManyToOne
+    @JoinColumn(name = "return_station_id", referencedColumnName = "id")
+    private Station returnStation;
+
 
     @Column(name = "covered_distance")
     private int coveredDistance;
