@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,9 +16,15 @@ public class JourneyDTO {
 
     private long id;
 
-    private String firstName;
+    private LocalDateTime departureTime;
 
-    private String lastName;
+    private LocalDateTime returnTime;
 
-    private String email;
+    private Station departureStation;
+
+    private Station returnStation;
+
+    private int coveredDistance;
+
+    private int duration;
 }
