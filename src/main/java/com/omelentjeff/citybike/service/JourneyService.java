@@ -48,12 +48,12 @@ public class JourneyService {
         // Create a corrected Pageable object
         Pageable correctedPageable = PageRequest.of(pageNumber, pageSize, pageable.getSort());
 
-        Page<Journey> employeePage = journeyRepository.findAll(correctedPageable);
-        List<JourneyDTO> employeeDTOs = employeePage.stream()
+        Page<Journey> journeyPage = journeyRepository.findAll(correctedPageable);
+        List<JourneyDTO> journeyDTOS = journeyPage.stream()
                 .map(journeyMapper::toDTO)
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(employeeDTOs, correctedPageable, total);
+        return new PageImpl<>(journeyDTOS, correctedPageable, total);
     }
 }
 

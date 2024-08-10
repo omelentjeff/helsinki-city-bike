@@ -1,11 +1,11 @@
-package entity;
+package com.omelentjeff.citybike.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -29,8 +29,10 @@ public class Station {
     private String city;
 
     @OneToMany(mappedBy = "departureStation")
+    @JsonIgnore
     private List<Journey> departingJourneys;
 
     @OneToMany(mappedBy = "returnStation")
+    @JsonIgnore
     private List<Journey> returningJourneys;
 }
