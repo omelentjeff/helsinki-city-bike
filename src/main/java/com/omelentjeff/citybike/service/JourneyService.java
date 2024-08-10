@@ -2,6 +2,7 @@ package com.omelentjeff.citybike.service;
 
 import com.omelentjeff.citybike.dto.JourneyDTO;
 import com.omelentjeff.citybike.entity.Journey;
+import com.omelentjeff.citybike.exception.JourneyNotFoundException;
 import com.omelentjeff.citybike.mapper.JourneyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,6 +34,11 @@ public class JourneyService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(journeyDTOS, pageable, journeyPage.getTotalElements());
+    }
+
+    public JourneyDTO getJourneyById(int id) {
+        Journey tempJourney = journeyRepository.findById(id).orElseThrow(() -> new JourneyNotFoundException("Journey with id: " + id + " not found"));
+        return journeyMapper.toDTO(tempJourney);
     }
 }
 
