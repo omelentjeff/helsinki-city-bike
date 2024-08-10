@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 public interface JourneyMapper {
     JourneyMapper INSTANCE = Mappers.getMapper(JourneyMapper.class);
 
-    JourneyDTO toDTO(Journey employee);
+    JourneyDTO toDTO(Journey journey);
 
-    Journey toEntity(JourneyDTO employeeDTO);
+    Journey toEntity(JourneyDTO journeyDTO);
 }
