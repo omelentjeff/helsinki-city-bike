@@ -4,6 +4,8 @@ import com.omelentjeff.citybike.dto.JourneyDTO;
 import com.omelentjeff.citybike.dto.StationDTO;
 import com.omelentjeff.citybike.entity.Journey;
 import com.omelentjeff.citybike.entity.Station;
+import com.omelentjeff.citybike.exception.JourneyNotFoundException;
+import com.omelentjeff.citybike.exception.StationNotFoundException;
 import com.omelentjeff.citybike.mapper.StationMapper;
 import com.omelentjeff.citybike.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +36,10 @@ public class StationService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(stationDTOs, pageable, stationPage.getTotalElements());
+    }
+
+    public StationDTO getStationById(int id) {
+        Station tempStation = stationRepository.findById(id).orElseThrow(() -> new StationNotFoundException("Station with id: " + id + " not found"));
+        return stationMapper.toDTO(tempStation);
     }
 }
