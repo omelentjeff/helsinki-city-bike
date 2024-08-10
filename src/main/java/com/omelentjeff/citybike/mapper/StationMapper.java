@@ -1,8 +1,6 @@
 package com.omelentjeff.citybike.mapper;
 
-import com.omelentjeff.citybike.dto.JourneyDTO;
 import com.omelentjeff.citybike.dto.StationDTO;
-import com.omelentjeff.citybike.entity.Journey;
 import com.omelentjeff.citybike.entity.Station;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
