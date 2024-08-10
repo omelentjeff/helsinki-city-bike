@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/journeys")
+@RequestMapping("api/stations")
 public class StationController {
 
     private final StationService stationService;
@@ -25,7 +25,7 @@ public class StationController {
     }
 
     @GetMapping({"/", ""})
-    public ResponseEntity<Page<StationDTO>> getAllJourneys(
+    public ResponseEntity<Page<StationDTO>> getAllStations(
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<StationDTO> stations = stationService.getAllStations(pageable);
         return ResponseEntity.ok(stations);
