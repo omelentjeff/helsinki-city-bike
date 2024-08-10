@@ -29,4 +29,13 @@ public class GlobalExceptionHandler {
         error.setTimeStamp(System.currentTimeMillis());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> catchALl(Exception ex) {
+        ErrorResponse error = new ErrorResponse();
+        error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        error.setMessage("Something went wrong...");
+        error.setTimeStamp(System.currentTimeMillis());
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
