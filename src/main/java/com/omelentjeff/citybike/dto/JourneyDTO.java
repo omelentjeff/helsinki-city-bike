@@ -1,9 +1,6 @@
-package dto;
+package com.omelentjeff.citybike.dto;
 
-import entity.Station;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import com.omelentjeff.citybike.entity.Station;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

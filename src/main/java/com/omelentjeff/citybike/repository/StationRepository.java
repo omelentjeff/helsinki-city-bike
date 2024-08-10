@@ -1,6 +1,6 @@
-package repository;
+package com.omelentjeff.citybike.repository;
 
-import entity.Station;
+import com.omelentjeff.citybike.entity.Station;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
