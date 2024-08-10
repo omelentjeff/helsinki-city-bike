@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,5 +29,10 @@ public class JourneyController {
             @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         Page<JourneyDTO> journeys = journeyService.getAllJourneys(pageable);
         return ResponseEntity.ok(journeys);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<JourneyDTO> findJourneyById(@PathVariable int id) {
+        return ResponseEntity.ok(journeyService.getJourneyById(id));
     }
 }
