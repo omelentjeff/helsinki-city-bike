@@ -1,11 +1,11 @@
-package mapper;
+package com.omelentjeff.citybike.mapper;
 
-import dto.JourneyDTO;
-import entity.Journey;
+import com.omelentjeff.citybike.dto.JourneyDTO;
+import com.omelentjeff.citybike.entity.Journey;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface JourneyMapper {
     JourneyMapper INSTANCE = Mappers.getMapper(JourneyMapper.class);
 
