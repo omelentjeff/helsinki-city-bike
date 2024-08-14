@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StationDTO {
 
-    private int id;
+    private long id;
     private String name;
     private String address;
     private String city;

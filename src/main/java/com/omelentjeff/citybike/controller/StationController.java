@@ -33,7 +33,7 @@ public class StationController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StationDTO> getStationById(@PathVariable int id) {
+    public ResponseEntity<StationDTO> getStationById(@PathVariable long id) {
         return ResponseEntity.ok(stationService.getStationById(id));
     }
 }

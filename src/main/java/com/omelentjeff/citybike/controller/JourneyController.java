@@ -32,7 +32,7 @@ public class JourneyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<JourneyDTO> findJourneyById(@PathVariable int id) {
+    public ResponseEntity<JourneyDTO> findJourneyById(@PathVariable long id) {
         return ResponseEntity.ok(journeyService.getJourneyById(id));
     }
 }

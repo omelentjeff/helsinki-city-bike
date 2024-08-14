@@ -16,7 +16,7 @@ public class Journey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id;
 
     @Column(name = "departure")
     private LocalDateTime departureTime;

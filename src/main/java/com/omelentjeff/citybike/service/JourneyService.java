@@ -36,7 +36,7 @@ public class JourneyService {
         return new PageImpl<>(journeyDTOS, pageable, journeyPage.getTotalElements());
     }
 
-    public JourneyDTO getJourneyById(int id) {
+    public JourneyDTO getJourneyById(long id) {
         Journey tempJourney = journeyRepository.findById(id).orElseThrow(() -> new JourneyNotFoundException("Journey with id: " + id + " not found"));
         return journeyMapper.toDTO(tempJourney);
     }

@@ -38,7 +38,7 @@ public class StationService {
         return new PageImpl<>(stationDTOs, pageable, stationPage.getTotalElements());
     }
 
-    public StationDTO getStationById(int id) {
+    public StationDTO getStationById(long id) {
         Station tempStation = stationRepository.findById(id).orElseThrow(() -> new StationNotFoundException("Station with id: " + id + " not found"));
         return stationMapper.toDTO(tempStation);
     }
