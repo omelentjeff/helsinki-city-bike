@@ -42,4 +42,14 @@ public class StationService {
         Station tempStation = stationRepository.findById(id).orElseThrow(() -> new StationNotFoundException("Station with id: " + id + " not found"));
         return stationMapper.toDTO(tempStation);
     }
+
+    public Page<StationDTO> searchStations(String name, String address, Pageable pageable) {
+        Page<Station> stationPage = stationRepository.findByNameContainingIgnoreCaseOrAddressContainingIgnoreCase(name, address, pageable);
+
+        List<StationDTO> stationDTOs = stationPage.stream()
+                .map(stationMapper::toDTO)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(stationDTOs, pageable, stationPage.getTotalElements());
+    }
 }
