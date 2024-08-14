@@ -26,4 +26,4 @@ replay_pid*
 
 .DS_Store
 
-bike_data/journeys_data/original_journeys_data/*.csv
+data/bike_data/journeys_data/original_journeys_data/*.csv
