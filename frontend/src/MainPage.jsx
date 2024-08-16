@@ -18,6 +18,7 @@ export default function App() {
       >
         <MyButton label="Journeys" />
         <MyButton label="Stations" />
+        <MyButton label="Map" />
       </Box>
     </Container>
   );
