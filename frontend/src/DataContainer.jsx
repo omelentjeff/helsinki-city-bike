@@ -6,14 +6,24 @@ export default function DataContainer({
   selectedButton,
   journeyData,
   stationData,
+  journeyTotalPages,
+  stationTotalPages,
+  fetchStationData,
 }) {
   return (
     <>
       {selectedButton === "journeys" && (
-        <JourneyTableComponent data={journeyData} />
+        <JourneyTableComponent
+          data={journeyData}
+          totalPages={journeyTotalPages}
+        />
       )}
       {selectedButton === "stations" && (
-        <StationTableComponent data={stationData} />
+        <StationTableComponent
+          data={stationData}
+          totalPages={stationTotalPages}
+          fetchStationData={fetchStationData}
+        />
       )}
     </>
   );
