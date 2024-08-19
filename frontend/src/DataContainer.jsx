@@ -9,6 +9,7 @@ export default function DataContainer({
   journeyTotalPages,
   stationTotalPages,
   fetchStationData,
+  fetchJourneyData,
 }) {
   return (
     <>
@@ -16,6 +17,7 @@ export default function DataContainer({
         <JourneyTableComponent
           data={journeyData}
           totalPages={journeyTotalPages}
+          fetchJourneyData={fetchJourneyData}
         />
       )}
       {selectedButton === "stations" && (

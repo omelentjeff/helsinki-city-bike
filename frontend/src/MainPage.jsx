@@ -70,6 +70,7 @@ export default function MainPage() {
           journeyTotalPages={journeyTotalPages}
           stationTotalPages={stationTotalPages}
           fetchStationData={fetchStationData} // Pass down the fetching function
+          fetchJourneyData={fetchJourneyData} // Pass down the fetching function
         />
       )}
     </Container>

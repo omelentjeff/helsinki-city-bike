@@ -5,8 +5,8 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import Pagination from "@mui/material/Pagination";
 
 function formatToMinsAndSeconds(duration) {
   const minutes = Math.floor((duration % 3600) / 60);
@@ -34,17 +34,16 @@ const columns = [
   },
 ];
 
-export default function JourneyTableComponent({ data }) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+export default function JourneyTableComponent({
+  data,
+  totalPages,
+  fetchJourneyData,
+}) {
+  const [page, setPage] = React.useState(1);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const handleChangePage = (event, value) => {
+    setPage(value);
+    fetchJourneyData(value - 1); // Fetch the next page data
   };
 
   return (
@@ -65,45 +64,41 @@ export default function JourneyTableComponent({ data }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      if (
-                        column.id === "departureStation" ||
-                        column.id === "returnStation"
-                      ) {
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {value.name}
-                          </TableCell>
-                        );
-                      }
+            {data.map((row, index) => {
+              return (
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  {columns.map((column) => {
+                    const value = row[column.id];
+                    if (
+                      column.id === "departureStation" ||
+                      column.id === "returnStation"
+                    ) {
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === "number"
-                            ? column.format(value)
-                            : value}
+                          {value.name}
                         </TableCell>
                       );
-                    })}
-                  </TableRow>
-                );
-              })}
+                    }
+                    return (
+                      <TableCell key={column.id} align={column.align}>
+                        {column.format && typeof value === "number"
+                          ? column.format(value)
+                          : value}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={data.length}
-        rowsPerPage={rowsPerPage}
+      <Pagination
+        count={totalPages}
         page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
+        onChange={handleChangePage}
+        color="primary"
+        sx={{ display: "flex", justifyContent: "center", padding: 2 }}
       />
     </Paper>
   );
