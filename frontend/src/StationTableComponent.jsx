@@ -7,10 +7,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
+import Button from "@mui/material/Button";
 
 const columns = [
   { id: "name", label: "Station Name", minWidth: 170 },
   { id: "address", label: "Address", minWidth: 170 },
+  { id: "details", label: "Details", minWidth: 100 },
 ];
 
 export default function StationTableComponent({
@@ -23,6 +25,11 @@ export default function StationTableComponent({
   const handleChangePage = (event, value) => {
     setPage(value);
     fetchStationData(value - 1); // Fetch the next page data
+  };
+
+  const handleShowDetails = (row) => {
+    // TODO show details page for station
+    console.log("Showing details for:", row);
   };
 
   return (
@@ -45,7 +52,19 @@ export default function StationTableComponent({
             {data.map((row, index) => (
               <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                 {columns.map((column) => (
-                  <TableCell key={column.id}>{row[column.id]}</TableCell>
+                  <TableCell key={column.id}>
+                    {column.id !== "details" ? (
+                      row[column.id]
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleShowDetails(row)}
+                      >
+                        Show Details
+                      </Button>
+                    )}
+                  </TableCell>
                 ))}
               </TableRow>
             ))}
