@@ -50,6 +50,7 @@ export default function MainPage() {
           alignItems: "center",
           justifyContent: "center",
           marginTop: 2,
+          marginBottom: 2,
         }}
       >
         <MyButton
