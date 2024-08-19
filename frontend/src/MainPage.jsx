@@ -8,25 +8,33 @@ export default function MainPage() {
   const [selectedButton, setSelectedButton] = useState(null);
   const [journeyData, setJourneyData] = useState([]);
   const [stationData, setStationData] = useState([]);
+  const [journeyTotalPages, setJourneyTotalPages] = useState(0);
+  const [stationTotalPages, setStationTotalPages] = useState(0);
 
-  useEffect(() => {
-    // Fetch journey data
-    fetch("http://localhost:8080/api/journeys")
+  const fetchStationData = (page = 0) => {
+    fetch(`http://localhost:8080/api/stations?page=${page}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Journey data:", data); // Debugging journey data
-        setJourneyData(data.content);
-      })
-      .catch((error) => console.error("Error fetching journey data:", error));
-
-    // Fetch station data
-    fetch("http://localhost:8080/api/stations")
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Station data:", data); // Debugging station data
         setStationData(data.content);
+        setStationTotalPages(data.totalPages);
       })
       .catch((error) => console.error("Error fetching station data:", error));
+  };
+
+  const fetchJourneyData = (page = 0) => {
+    fetch(`http://localhost:8080/api/journeys?page=${page}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setJourneyData(data.content);
+        setJourneyTotalPages(data.totalPages);
+      })
+      .catch((error) => console.error("Error fetching journey data:", error));
+  };
+
+  useEffect(() => {
+    // Fetch initial station data
+    fetchStationData(0);
+    fetchJourneyData(0);
   }, []);
 
   const handleButtonClick = (button) => {
@@ -59,6 +67,9 @@ export default function MainPage() {
           selectedButton={selectedButton}
           journeyData={journeyData}
           stationData={stationData}
+          journeyTotalPages={journeyTotalPages}
+          stationTotalPages={stationTotalPages}
+          fetchStationData={fetchStationData} // Pass down the fetching function
         />
       )}
     </Container>
