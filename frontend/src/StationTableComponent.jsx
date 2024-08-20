@@ -9,6 +9,8 @@ import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 
+import { useNavigate } from "react-router-dom";
+
 const columns = [
   { id: "name", label: "Station Name", minWidth: 170 },
   { id: "address", label: "Address", minWidth: 170 },
@@ -21,6 +23,7 @@ export default function StationTableComponent({
   fetchStationData,
 }) {
   const [page, setPage] = React.useState(1);
+  const navigate = useNavigate();
 
   const handleChangePage = (event, value) => {
     setPage(value);
@@ -28,8 +31,7 @@ export default function StationTableComponent({
   };
 
   const handleShowDetails = (row) => {
-    // TODO show details page for station
-    console.log("Showing details for:", row);
+    navigate(`/station/${row.id}`);
   };
 
   return (
