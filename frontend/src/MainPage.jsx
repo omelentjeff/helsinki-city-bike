@@ -4,6 +4,8 @@ import Box from "@mui/material/Box";
 import MyButton from "./MyButton";
 import DataContainer from "./DataContainer";
 
+import { fetchData } from "./apiService";
+
 export default function MainPage() {
   const [selectedButton, setSelectedButton] = useState(null);
   const [journeyData, setJourneyData] = useState([]);
@@ -11,24 +13,24 @@ export default function MainPage() {
   const [journeyTotalPages, setJourneyTotalPages] = useState(0);
   const [stationTotalPages, setStationTotalPages] = useState(0);
 
-  const fetchStationData = (page = 0) => {
-    fetch(`http://localhost:8080/api/stations?page=${page}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setStationData(data.content);
-        setStationTotalPages(data.totalPages);
-      })
-      .catch((error) => console.error("Error fetching station data:", error));
+  const fetchStationData = async (page = 0) => {
+    try {
+      const data = await fetchData("stations", page);
+      setStationData(data.content);
+      setStationTotalPages(data.totalPages);
+    } catch (error) {
+      console.error("Error fetching station data:", error);
+    }
   };
 
-  const fetchJourneyData = (page = 0) => {
-    fetch(`http://localhost:8080/api/journeys?page=${page}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setJourneyData(data.content);
-        setJourneyTotalPages(data.totalPages);
-      })
-      .catch((error) => console.error("Error fetching journey data:", error));
+  const fetchJourneyData = async (page = 0) => {
+    try {
+      const data = await fetchData("journeys", page);
+      setJourneyData(data.content);
+      setJourneyTotalPages(data.totalPages);
+    } catch (error) {
+      console.error("Error fetching journey data:", error);
+    }
   };
 
   useEffect(() => {
