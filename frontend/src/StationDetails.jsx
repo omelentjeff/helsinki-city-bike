@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import { fetchSingleData } from "./apiService";
@@ -7,26 +7,28 @@ import { fetchSingleData } from "./apiService";
 export default function StationDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [station, setStation] = React.useState(null);
-
-  const fetchStationData = async (id) => {
-    try {
-      const data = await fetchSingleData("stations", id);
-      setStation(data);
-    } catch (error) {
-      console.error("Error fetching station data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [station, setStation] = useState(null);
 
   useEffect(() => {
+    const fetchStationData = async () => {
+      try {
+        const data = await fetchSingleData("stations", id);
+        setStation(data);
+      } catch (error) {
+        console.error("Error fetching station data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchStationData(id);
   }, [id]);
 
   const handleBackClick = () => {
-    navigate("/stations"); // Go back to the stations list
+    const previousPage = location.state?.page || 1;
+    navigate("/stations", { state: { page: previousPage } });
   };
 
   if (isLoading) {

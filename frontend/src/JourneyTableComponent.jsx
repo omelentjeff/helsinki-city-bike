@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,6 +7,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
+
+import { fetchData } from "./apiService";
 
 function formatToMinsAndSeconds(duration) {
   const minutes = Math.floor((duration % 3600) / 60);
@@ -34,16 +36,27 @@ const columns = [
   },
 ];
 
-export default function JourneyTableComponent({
-  data,
-  totalPages,
-  fetchJourneyData,
-}) {
-  const [page, setPage] = React.useState(1);
+export default function JourneyTableComponent({}) {
+  const [data, setData] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(location.state?.page || 1);
+
+  useEffect(() => {
+    const fetchStationData = async () => {
+      try {
+        const data = await fetchData("journeys", page - 1);
+        setData(data.content);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error("Error fetching station data:", error);
+      }
+    };
+
+    fetchStationData();
+  }, [page]);
 
   const handleChangePage = (event, value) => {
     setPage(value);
-    fetchJourneyData(value - 1); // Fetch the next page data
   };
 
   return (

@@ -20,7 +20,7 @@ export default function App() {
             path="/journeys"
             element={<MainPage initialSelected="journeys" />}
           />
-          <Route path="/station/:id" element={<StationDetails />} />
+          <Route path="/stations/:id" element={<StationDetails />} />
         </Routes>
       </Container>
     </Router>

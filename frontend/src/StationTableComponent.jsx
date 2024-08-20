@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,8 +8,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
-
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { fetchData } from "./apiService";
 
 const columns = [
   { id: "name", label: "Station Name", minWidth: 170 },
@@ -17,21 +17,33 @@ const columns = [
   { id: "details", label: "Details", minWidth: 100 },
 ];
 
-export default function StationTableComponent({
-  data,
-  totalPages,
-  fetchStationData,
-}) {
-  const [page, setPage] = React.useState(1);
+export default function StationTableComponent() {
+  const [data, setData] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const location = useLocation();
+  const [page, setPage] = useState(location.state?.page || 1);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchStationData = async () => {
+      try {
+        const data = await fetchData("stations", page - 1);
+        setData(data.content);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error("Error fetching station data:", error);
+      }
+    };
+
+    fetchStationData();
+  }, [page]);
 
   const handleChangePage = (event, value) => {
     setPage(value);
-    fetchStationData(value - 1); // Fetch the next page data
   };
 
   const handleShowDetails = (row) => {
-    navigate(`/station/${row.id}`);
+    navigate(`/stations/${row.id}`, { state: { page } });
   };
 
   return (
