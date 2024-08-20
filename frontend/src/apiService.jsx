@@ -1,8 +1,8 @@
 // src/apiService.js
-export const fetchData = async (endpoint, page = 0) => {
+export const fetchData = async (endpoint, page = 0, pageSize = 10) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/${endpoint}?page=${page}`
+      `http://localhost:8080/api/${endpoint}?page=${page}&size=${pageSize}`
     );
     const data = await response.json();
     return data;
