@@ -13,11 +13,11 @@ export default function StationDetails() {
   const fetchStationData = async (id) => {
     try {
       const data = await fetchSingleData("stations", id);
-      setStation(data); // Assuming data is the station object itself
+      setStation(data);
     } catch (error) {
       console.error("Error fetching station data:", error);
     } finally {
-      setIsLoading(false); // Ensure loading state is turned off after fetching
+      setIsLoading(false);
     }
   };
 
@@ -26,7 +26,7 @@ export default function StationDetails() {
   }, [id]);
 
   const handleBackClick = () => {
-    navigate("/");
+    navigate("/stations"); // Go back to the stations list
   };
 
   if (isLoading) {

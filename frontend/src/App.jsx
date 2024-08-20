@@ -11,9 +11,16 @@ export default function App() {
       <MyAppBar />
       <Container>
         <Routes>
-          <Route path="/" element={<MainPage />} /> {/* Main page route */}
-          <Route path="/station/:id" element={<StationDetails />} />{" "}
-          {/* Details page route */}
+          <Route path="/" element={<MainPage />} />
+          <Route
+            path="/stations"
+            element={<MainPage initialSelected="stations" />}
+          />
+          <Route
+            path="/journeys"
+            element={<MainPage initialSelected="journeys" />}
+          />
+          <Route path="/station/:id" element={<StationDetails />} />
         </Routes>
       </Container>
     </Router>

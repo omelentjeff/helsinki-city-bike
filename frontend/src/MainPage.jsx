@@ -3,15 +3,26 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import MyButton from "./MyButton";
 import DataContainer from "./DataContainer";
-
 import { fetchData } from "./apiService";
+import { useNavigate } from "react-router-dom";
 
-export default function MainPage() {
-  const [selectedButton, setSelectedButton] = useState(null);
+export default function MainPage({ initialSelected = null }) {
+  const [selectedButton, setSelectedButton] = useState(initialSelected);
   const [journeyData, setJourneyData] = useState([]);
   const [stationData, setStationData] = useState([]);
   const [journeyTotalPages, setJourneyTotalPages] = useState(0);
   const [stationTotalPages, setStationTotalPages] = useState(0);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchStationData(0);
+    fetchJourneyData(0);
+  }, []);
+
+  const handleButtonClick = (button) => {
+    setSelectedButton(button);
+    navigate(`/${button}`);
+  };
 
   const fetchStationData = async (page = 0) => {
     try {
@@ -31,16 +42,6 @@ export default function MainPage() {
     } catch (error) {
       console.error("Error fetching journey data:", error);
     }
-  };
-
-  useEffect(() => {
-    // Fetch initial station data
-    fetchStationData(0);
-    fetchJourneyData(0);
-  }, []);
-
-  const handleButtonClick = (button) => {
-    setSelectedButton(button);
   };
 
   return (
@@ -72,8 +73,8 @@ export default function MainPage() {
           stationData={stationData}
           journeyTotalPages={journeyTotalPages}
           stationTotalPages={stationTotalPages}
-          fetchStationData={fetchStationData} // Pass down the fetching function
-          fetchJourneyData={fetchJourneyData} // Pass down the fetching function
+          fetchStationData={fetchStationData}
+          fetchJourneyData={fetchJourneyData}
         />
       )}
     </Container>
