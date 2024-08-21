@@ -93,7 +93,8 @@ export default function JourneyTableComponent() {
           sx={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
+            alignItems: "flex-start",
+            marginTop: 20,
             height: "100vh",
           }}
         >
