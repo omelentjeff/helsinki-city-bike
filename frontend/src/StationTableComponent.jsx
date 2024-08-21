@@ -10,6 +10,8 @@ import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { fetchData } from "./apiService";
+import { CircularProgress } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const columns = [
   { id: "name", label: "Station Name", minWidth: 170 },
@@ -23,6 +25,7 @@ export default function StationTableComponent() {
   const location = useLocation();
   const [page, setPage] = useState(location.state?.page || 1);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchStationData = async () => {
@@ -32,6 +35,8 @@ export default function StationTableComponent() {
         setTotalPages(data.totalPages);
       } catch (error) {
         console.error("Error fetching station data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -39,6 +44,7 @@ export default function StationTableComponent() {
   }, [page]);
 
   const handleChangePage = (event, value) => {
+    setIsLoading(true);
     setPage(value);
   };
 
@@ -48,50 +54,65 @@ export default function StationTableComponent() {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row, index) => (
-              <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                {columns.map((column) => (
-                  <TableCell key={column.id}>
-                    {column.id !== "details" ? (
-                      row[column.id]
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleShowDetails(row)}
-                      >
-                        Show Details
-                      </Button>
-                    )}
-                  </TableCell>
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((row, index) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                    {columns.map((column) => (
+                      <TableCell key={column.id}>
+                        {column.id !== "details" ? (
+                          row[column.id]
+                        ) : (
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleShowDetails(row)}
+                          >
+                            Show Details
+                          </Button>
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
                 ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handleChangePage}
-        color="primary"
-        sx={{ display: "flex", justifyContent: "center", padding: 2 }}
-      />
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handleChangePage}
+            color="primary"
+            sx={{ display: "flex", justifyContent: "center", padding: 2 }}
+          />
+        </>
+      )}
     </Paper>
   );
 }
