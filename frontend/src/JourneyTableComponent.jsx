@@ -71,9 +71,10 @@ export default function JourneyTableComponent() {
         const data = await fetchData("journeys", page - 1);
         setData(data.content);
         setTotalPages(data.totalPages);
-        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching station data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -81,6 +82,7 @@ export default function JourneyTableComponent() {
   }, [page]);
 
   const handleChangePage = (event, value) => {
+    setIsLoading(true);
     setPage(value);
   };
 
