@@ -16,27 +16,48 @@ function formatToMinsAndSeconds(duration) {
   return `${minutes}m ${seconds}s`;
 }
 
+function formatDateTime(dateTime) {
+  const options = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+  return new Date(dateTime).toLocaleString("en-US", options);
+}
+
 const columns = [
-  { id: "departureTime", label: "Departure Time", minWidth: 170 },
-  { id: "returnTime", label: "Return Time", minWidth: 170 },
-  { id: "departureStation", label: "Departure Station", minWidth: 170 },
-  { id: "returnStation", label: "Return Station", minWidth: 170 },
+  {
+    id: "departureTime",
+    label: "Departure Time",
+    minWidth: 150,
+    format: formatDateTime,
+  },
+  {
+    id: "returnTime",
+    label: "Return Time",
+    minWidth: 150,
+    format: (value) => formatDateTime(value),
+  },
+  { id: "departureStation", label: "Departure Station", minWidth: 140 },
+  { id: "returnStation", label: "Return Station", minWidth: 140 },
   {
     id: "coveredDistance",
     label: "Covered Distance (m)",
-    minWidth: 170,
+    minWidth: 120,
     align: "right",
   },
   {
     id: "duration",
     label: "Duration",
-    minWidth: 170,
+    minWidth: 120,
     align: "right",
     format: (value) => formatToMinsAndSeconds(value),
   },
 ];
 
-export default function JourneyTableComponent({}) {
+export default function JourneyTableComponent() {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(location.state?.page || 1);
@@ -94,9 +115,7 @@ export default function JourneyTableComponent({}) {
                     }
                     return (
                       <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === "number"
-                          ? column.format(value)
-                          : value}
+                        {column.format ? column.format(value) : value}
                       </TableCell>
                     );
                   })}
