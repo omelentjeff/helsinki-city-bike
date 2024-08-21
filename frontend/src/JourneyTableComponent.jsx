@@ -7,6 +7,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
+import { CircularProgress } from "@mui/material";
+import Box from "@mui/material/Box";
 
 import { fetchData } from "./apiService";
 
@@ -61,6 +63,7 @@ export default function JourneyTableComponent() {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(location.state?.page || 1);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchStationData = async () => {
@@ -68,6 +71,7 @@ export default function JourneyTableComponent() {
         const data = await fetchData("journeys", page - 1);
         setData(data.content);
         setTotalPages(data.totalPages);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching station data:", error);
       }
@@ -82,56 +86,71 @@ export default function JourneyTableComponent() {
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row, index) => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                  {columns.map((column) => {
-                    const value = row[column.id];
-                    if (
-                      column.id === "departureStation" ||
-                      column.id === "returnStation"
-                    ) {
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {value.name}
-                        </TableCell>
-                      );
-                    }
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
+                  {columns.map((column) => (
+                    <TableCell
+                      key={column.id}
+                      align={column.align}
+                      style={{ minWidth: column.minWidth }}
+                    >
+                      {column.label}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={handleChangePage}
-        color="primary"
-        sx={{ display: "flex", justifyContent: "center", padding: 2 }}
-      />
+              </TableHead>
+              <TableBody>
+                {data.map((row, index) => {
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                      {columns.map((column) => {
+                        const value = row[column.id];
+                        if (
+                          column.id === "departureStation" ||
+                          column.id === "returnStation"
+                        ) {
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {value.name}
+                            </TableCell>
+                          );
+                        }
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.format ? column.format(value) : value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handleChangePage}
+            color="primary"
+            sx={{ display: "flex", justifyContent: "center", padding: 2 }}
+          />
+        </>
+      )}
     </Paper>
   );
 }
