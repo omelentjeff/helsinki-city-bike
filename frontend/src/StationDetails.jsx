@@ -85,7 +85,7 @@ export default function StationDetails() {
         spacing={2}
         style={{ marginTop: 20 }}
       >
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Card sx={{ boxShadow: 3 }}>
             <CardContent>
               <Typography
@@ -95,9 +95,6 @@ export default function StationDetails() {
                 gutterBottom
               >
                 Station Details
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                ID: {id}
               </Typography>
               <Typography variant="h6" component="div" sx={{ mt: 2 }}>
                 {station.name}
@@ -112,8 +109,8 @@ export default function StationDetails() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6}>
-          <MapComponent station={station} />{" "}
+        <Grid item xs={12} md={8}>
+          <MapComponent station={station} />
         </Grid>
       </Grid>
     </div>
