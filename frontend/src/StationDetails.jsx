@@ -9,6 +9,7 @@ import {
   Grid,
 } from "@mui/material";
 import { fetchSingleData } from "./apiService";
+import MapComponent from "./MapComponent";
 
 export default function StationDetails() {
   const { id } = useParams();
@@ -78,31 +79,42 @@ export default function StationDetails() {
         </Grid>
       </Grid>
 
-      <Grid container justifyContent="center" style={{ marginTop: 20 }}>
-        <Card sx={{ maxWidth: 600, width: "100%", boxShadow: 3 }}>
-          <CardContent>
-            <Typography
-              variant="h5"
-              component="div"
-              align="center"
-              gutterBottom
-            >
-              Station Details
-            </Typography>
-            <Typography variant="h6" component="div" sx={{ mt: 2 }}>
-              {station.name}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              Address: {station.address}
-            </Typography>
-            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-              City: {station.city}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Coordinates: ({station.x}, {station.y})
-            </Typography>
-          </CardContent>
-        </Card>
+      <Grid
+        container
+        justifyContent="center"
+        spacing={2}
+        style={{ marginTop: 20 }}
+      >
+        <Grid item xs={12} md={6}>
+          <Card sx={{ boxShadow: 3 }}>
+            <CardContent>
+              <Typography
+                variant="h5"
+                component="div"
+                align="center"
+                gutterBottom
+              >
+                Station Details
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                ID: {id}
+              </Typography>
+              <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+                {station.name}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+                Address: {station.address}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+                City: {station.city}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <MapComponent station={station} />{" "}
+        </Grid>
       </Grid>
     </div>
   );
