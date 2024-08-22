@@ -25,13 +25,15 @@ def detect_encoding(file_path):
 # Function to create the tables if they don't exist
 def create_tables(cursor):
     create_stations_table_query = """
-    CREATE TABLE IF NOT EXISTS stations (
-        id INT PRIMARY KEY,
-        name VARCHAR(255),
-        address VARCHAR(255),
-        city VARCHAR(255)
-    );
-    """
+       CREATE TABLE IF NOT EXISTS stations (
+           id INT PRIMARY KEY,
+           name VARCHAR(255),
+           address VARCHAR(255),
+           city VARCHAR(255),
+           x FLOAT,  -- Assuming x is a floating point number (e.g., longitude)
+           y FLOAT   -- Assuming y is a floating point number (e.g., latitude)
+       );
+       """
     cursor.execute(create_stations_table_query)
 
     create_journeys_table_query = """
@@ -60,12 +62,12 @@ def import_stations(cursor):
     encoding = detect_encoding(station_csv)
     data = pd.read_csv(station_csv, encoding=encoding)
     insert_query = """
-    INSERT INTO stations (id, name, address, city)
-    VALUES (%s, %s, %s, %s)
+    INSERT INTO stations (id, name, address, city,x ,y)
+    VALUES (%s, %s, %s, %s, %s, %s)
     """
     for index, row in data.iterrows():
         cursor.execute(insert_query, (
-            row['ID'], row['Nimi'], row['Osoite'], row['Kaupunki']
+            row['ID'], row['Nimi'], row['Osoite'], row['Kaupunki'], row['x'], row['y']
         ))
 
 def import_journeys(cursor):
