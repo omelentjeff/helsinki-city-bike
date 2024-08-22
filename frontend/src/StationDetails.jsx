@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import Button from "@mui/material/Button";
-import { CircularProgress } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  Typography,
+  Button,
+  CircularProgress,
+  Grid,
+} from "@mui/material";
 import { fetchSingleData } from "./apiService";
 
 export default function StationDetails() {
@@ -32,27 +38,72 @@ export default function StationDetails() {
   };
 
   if (isLoading) {
-    return <CircularProgress />;
+    return (
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <CircularProgress />
+      </Grid>
+    );
   }
 
   if (!station) {
-    return <div>No station found</div>;
+    return (
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        style={{ minHeight: "100vh" }}
+      >
+        <Typography variant="h6">No station found</Typography>
+      </Grid>
+    );
   }
 
   return (
     <div>
-      <h2>Station Details for ID: {id}</h2>
-      <p>Name: {station.name}</p>
-      <p>Address: {station.address}</p>
-      <p>City: {station.city}</p>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleBackClick}
-        sx={{ marginTop: 2 }}
-      >
-        Back to Stations
-      </Button>
+      <Grid container>
+        <Grid item>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleBackClick}
+            sx={{ margin: 2 }}
+          >
+            Back to Stations
+          </Button>
+        </Grid>
+      </Grid>
+
+      <Grid container justifyContent="center" style={{ marginTop: 20 }}>
+        <Card sx={{ maxWidth: 600, width: "100%", boxShadow: 3 }}>
+          <CardContent>
+            <Typography
+              variant="h5"
+              component="div"
+              align="center"
+              gutterBottom
+            >
+              Station Details
+            </Typography>
+            <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+              {station.name}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              Address: {station.address}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
+              City: {station.city}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              Coordinates: ({station.x}, {station.y})
+            </Typography>
+          </CardContent>
+        </Card>
+      </Grid>
     </div>
   );
 }
