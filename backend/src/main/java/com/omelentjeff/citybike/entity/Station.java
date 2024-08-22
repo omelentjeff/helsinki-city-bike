@@ -35,4 +35,10 @@ public class Station {
     @OneToMany(mappedBy = "returnStation")
     @JsonIgnore
     private List<Journey> returningJourneys;
+
+    @Column(name = "x")
+    private float x;
+
+    @Column(name = "y")
+    private float y;
 }

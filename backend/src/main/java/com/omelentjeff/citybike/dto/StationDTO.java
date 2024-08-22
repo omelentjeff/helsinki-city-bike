@@ -13,4 +13,6 @@ public class StationDTO {
     private String name;
     private String address;
     private String city;
+    private float x;
+    private float y;
 }
