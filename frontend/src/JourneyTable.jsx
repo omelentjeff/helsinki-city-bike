@@ -7,8 +7,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
+import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
+
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { fetchData } from "./apiService";
 
@@ -60,6 +63,8 @@ const columns = [
 ];
 
 export default function JourneyTable() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(location.state?.page || 1);
@@ -84,6 +89,12 @@ export default function JourneyTable() {
   const handleChangePage = (event, value) => {
     setIsLoading(true);
     setPage(value);
+  };
+
+  const handleStationClick = (stationId) => {
+    navigate(`/stations/${stationId}`, {
+      state: { from: "journeys", page: page },
+    });
   };
 
   return (
@@ -129,7 +140,12 @@ export default function JourneyTable() {
                         ) {
                           return (
                             <TableCell key={column.id} align={column.align}>
-                              {value.name}
+                              <Button
+                                variant="text"
+                                onClick={() => handleStationClick(value.id)}
+                              >
+                                {value.name}
+                              </Button>
                             </TableCell>
                           );
                         }
