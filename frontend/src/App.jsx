@@ -3,6 +3,7 @@ import Container from "@mui/material/Container";
 import MyAppBar from "./MyAppBar.jsx";
 import MainPage from "./MainPage.jsx";
 import StationDetails from "./StationDetails.jsx";
+import ClusterMap from "./ClusterMap.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
             element={<MainPage initialSelected="journeys" />}
           />
           <Route path="/stations/:id" element={<StationDetails />} />
+          <Route path="/map" element={<ClusterMap />} />
         </Routes>
       </Container>
     </Router>
