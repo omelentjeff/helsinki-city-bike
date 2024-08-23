@@ -35,7 +35,9 @@ export default function StationDetails() {
 
   const handleBackClick = () => {
     const previousPage = location.state?.page || 1;
-    navigate("/stations", { state: { page: previousPage } });
+    navigate(`/${location.state?.from || "stations"}`, {
+      state: { page: previousPage },
+    });
   };
 
   if (isLoading) {
@@ -74,7 +76,8 @@ export default function StationDetails() {
             onClick={handleBackClick}
             sx={{ margin: 2 }}
           >
-            Back to Stations
+            Back to{" "}
+            {location.state?.from === "journeys" ? "Journeys" : "Stations"}
           </Button>
         </Grid>
       </Grid>

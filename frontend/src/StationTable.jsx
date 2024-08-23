@@ -20,11 +20,12 @@ const columns = [
 ];
 
 export default function StationTable() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
-  const location = useLocation();
   const [page, setPage] = useState(location.state?.page || 1);
-  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -49,7 +50,9 @@ export default function StationTable() {
   };
 
   const handleShowDetails = (row) => {
-    navigate(`/stations/${row.id}`, { state: { page } });
+    navigate(`/stations/${row.id}`, {
+      state: { from: "stations", page: page },
+    });
   };
 
   return (
