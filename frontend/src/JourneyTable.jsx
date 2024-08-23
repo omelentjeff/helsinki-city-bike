@@ -141,7 +141,9 @@ export default function JourneyTable() {
                           return (
                             <TableCell key={column.id} align={column.align}>
                               <Button
-                                variant="text"
+                                variant="contained"
+                                size="small"
+                                sx={{ minWidth: 100 }}
                                 onClick={() => handleStationClick(value.id)}
                               >
                                 {value.name}
