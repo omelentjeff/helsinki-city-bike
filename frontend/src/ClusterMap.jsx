@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
+import { CircularProgress, Box } from "@mui/material";
+
 import { fetchAllData } from "./apiService";
 
 // Fix the default icon issue with Leaflet and Webpack
@@ -16,8 +18,7 @@ L.Icon.Default.mergeOptions({
 
 const ClusterMap = () => {
   const [stations, setStations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [center, setCenter] = useState([51.505, -0.09]);
 
   useEffect(() => {
@@ -38,40 +39,50 @@ const ClusterMap = () => {
           setCenter([avgLatitude, avgLongitude]);
           console.log(avgLatitude, avgLongitude);
         }
-      } catch (error) {
-        setError(error);
+      } catch (err) {
+        console.error("Error fetching station data:", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
     loadStations();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
-  // Render map only after center is set
-  if (!center) return <div>Initializing map...</div>;
-
   return (
-    <MapContainer
-      center={center}
-      zoom={13}
-      style={{ height: "400px", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {stations.map((station, index) => (
-        <Marker key={index} position={[station.y, station.x]}>
-          <Popup>
-            {station.name} <br /> {station.address}
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+    <>
+      {isLoading ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "flex-start",
+            marginTop: 20,
+            height: "100vh",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <MapContainer
+          center={center}
+          zoom={13}
+          style={{ height: "400px", width: "100%" }}
+        >
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          />
+          {stations.map((station, index) => (
+            <Marker key={index} position={[station.y, station.x]}>
+              <Popup>
+                {station.name} <br /> {station.address}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      )}
+    </>
   );
 };
 
