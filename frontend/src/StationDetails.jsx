@@ -9,7 +9,7 @@ import {
   Grid,
 } from "@mui/material";
 import { fetchSingleData } from "./apiService";
-import MapComponent from "./MapComponent";
+import MapComponent from "./StationMap";
 
 export default function StationDetails() {
   const { id } = useParams();

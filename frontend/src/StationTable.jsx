@@ -19,7 +19,7 @@ const columns = [
   { id: "details", label: "Details", minWidth: 100 },
 ];
 
-export default function StationTableComponent() {
+export default function StationTable() {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const location = useLocation();

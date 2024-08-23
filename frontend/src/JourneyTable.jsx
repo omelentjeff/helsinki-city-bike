@@ -59,7 +59,7 @@ const columns = [
   },
 ];
 
-export default function JourneyTableComponent() {
+export default function JourneyTable() {
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(location.state?.page || 1);

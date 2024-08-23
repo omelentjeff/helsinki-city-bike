@@ -1,12 +1,12 @@
 import React from "react";
-import JourneyTableComponent from "./JourneyTableComponent";
-import StationTableComponent from "./StationTableComponent";
+import JourneyTable from "./JourneyTable";
+import StationTable from "./StationTable";
 
 export default function DataContainer({ selectedButton }) {
   return (
     <>
-      {selectedButton === "journeys" && <JourneyTableComponent />}
-      {selectedButton === "stations" && <StationTableComponent />}
+      {selectedButton === "journeys" && <JourneyTable />}
+      {selectedButton === "stations" && <StationTable />}
     </>
   );
 }
