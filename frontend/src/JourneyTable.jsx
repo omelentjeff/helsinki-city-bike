@@ -10,6 +10,8 @@ import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 import { useNavigate, useLocation } from "react-router-dom";
 
@@ -69,11 +71,16 @@ export default function JourneyTable() {
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(location.state?.page || 1);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortConfig, setSortConfig] = useState({
+    key: "id",
+    direction: "asc",
+  });
 
   useEffect(() => {
     const fetchStationData = async () => {
       try {
-        const data = await fetchData("journeys", page - 1);
+        const sortParam = `${sortConfig.key},${sortConfig.direction}`;
+        const data = await fetchData("journeys", page - 1, 10, sortParam);
         setData(data.content);
         setTotalPages(data.totalPages);
       } catch (error) {
@@ -84,7 +91,29 @@ export default function JourneyTable() {
     };
 
     fetchStationData();
-  }, [page]);
+  }, [page, sortConfig]);
+
+  const handleSort = (columnId) => {
+    setIsLoading(true);
+    let direction = "asc";
+    if (sortConfig.key === columnId) {
+      direction = sortConfig.direction === "asc" ? "desc" : "asc";
+    }
+    setSortConfig({ key: columnId, direction });
+    setPage(1);
+  };
+
+  const renderSortIcon = (columnId) => {
+    if (sortConfig.key === columnId) {
+      return sortConfig.direction === "asc" ? (
+        <ArrowDownwardIcon fontSize="small" />
+      ) : (
+        <ArrowUpwardIcon fontSize="small" />
+      );
+    } else {
+      return <ArrowUpwardIcon fontSize="small" color="disabled" />;
+    }
+  };
 
   const handleChangePage = (event, value) => {
     setIsLoading(true);
@@ -120,10 +149,10 @@ export default function JourneyTable() {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
+                      style={{ minWidth: column.minWidth, cursor: "pointer" }}
+                      onClick={() => handleSort(column.id)}
                     >
-                      {column.label}
+                      {column.label} {renderSortIcon(column.id)}
                     </TableCell>
                   ))}
                 </TableRow>
