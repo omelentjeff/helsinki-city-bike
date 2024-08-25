@@ -12,6 +12,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { fetchData } from "./apiService";
 import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 const columns = [
   { id: "name", label: "Station Name", minWidth: 170 },
@@ -27,11 +29,16 @@ export default function StationTable() {
   const [page, setPage] = useState(location.state?.page || 1);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [sortConfig, setSortConfig] = useState({
+    key: "name",
+    direction: "asc",
+  });
 
   useEffect(() => {
     const fetchStationData = async () => {
       try {
-        const data = await fetchData("stations", page - 1);
+        const sortParam = `${sortConfig.key},${sortConfig.direction}`;
+        const data = await fetchData("stations", page - 1, 10, sortParam);
         setData(data.content);
         setTotalPages(data.totalPages);
       } catch (error) {
@@ -42,7 +49,16 @@ export default function StationTable() {
     };
 
     fetchStationData();
-  }, [page]);
+  }, [page, sortConfig]);
+
+  const handleSort = (columnId) => {
+    let direction = "asc";
+    if (sortConfig.key === columnId) {
+      direction = sortConfig.direction === "asc" ? "desc" : "asc";
+    }
+    setSortConfig({ key: columnId, direction });
+    setPage(1);
+  };
 
   const handleChangePage = (event, value) => {
     setIsLoading(true);
@@ -53,6 +69,18 @@ export default function StationTable() {
     navigate(`/stations/${row.id}`, {
       state: { from: "stations", page: page },
     });
+  };
+
+  const renderSortIcon = (columnId) => {
+    if (sortConfig.key === columnId) {
+      return sortConfig.direction === "asc" ? (
+        <ArrowDownwardIcon fontSize="small" />
+      ) : (
+        <ArrowUpwardIcon fontSize="small" />
+      );
+    } else {
+      return <ArrowUpwardIcon fontSize="small" color="disabled" />;
+    }
   };
 
   return (
@@ -75,14 +103,24 @@ export default function StationTable() {
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
+                  {columns.map((column) =>
+                    column.id !== "details" ? (
+                      <TableCell
+                        key={column.id}
+                        style={{ minWidth: column.minWidth, cursor: "pointer" }}
+                        onClick={() => handleSort(column.id)}
+                      >
+                        {column.label} {renderSortIcon(column.id)}
+                      </TableCell>
+                    ) : (
+                      <TableCell
+                        key={column.id}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    )
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
