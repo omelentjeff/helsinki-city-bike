@@ -1,7 +1,12 @@
-export const fetchData = async (endpoint, page = 0, pageSize = 10) => {
+export const fetchData = async (
+  endpoint,
+  page = 0,
+  pageSize = 10,
+  sort = ""
+) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/${endpoint}?page=${page}&size=${pageSize}`
+      `http://localhost:8080/api/${endpoint}?page=${page}&size=${pageSize}&sort=${sort}`
     );
     const data = await response.json();
     return data;
