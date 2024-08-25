@@ -8,14 +8,12 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
+import { useNavigate, useLocation } from "react-router-dom";
+import { fetchData } from "./apiService";
 import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-
-import { useNavigate, useLocation } from "react-router-dom";
-
-import { fetchData } from "./apiService";
 
 function formatToMinsAndSeconds(duration) {
   const minutes = Math.floor((duration % 3600) / 60);
@@ -40,27 +38,41 @@ const columns = [
     label: "Departure Time",
     minWidth: 150,
     format: formatDateTime,
+    sortable: true,
   },
   {
     id: "returnTime",
     label: "Return Time",
     minWidth: 150,
-    format: (value) => formatDateTime(value),
+    format: formatDateTime,
+    sortable: true,
   },
-  { id: "departureStation", label: "Departure Station", minWidth: 140 },
-  { id: "returnStation", label: "Return Station", minWidth: 140 },
+  {
+    id: "departureStation",
+    label: "Departure Station",
+    minWidth: 140,
+    sortable: false,
+  },
+  {
+    id: "returnStation",
+    label: "Return Station",
+    minWidth: 140,
+    sortable: false,
+  },
   {
     id: "coveredDistance",
     label: "Covered Distance (m)",
     minWidth: 120,
     align: "right",
+    sortable: true,
   },
   {
     id: "duration",
     label: "Duration",
     minWidth: 120,
     align: "right",
-    format: (value) => formatToMinsAndSeconds(value),
+    format: formatToMinsAndSeconds,
+    sortable: true,
   },
 ];
 
@@ -72,30 +84,33 @@ export default function JourneyTable() {
   const [page, setPage] = useState(location.state?.page || 1);
   const [isLoading, setIsLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({
-    key: "id",
+    key: "departureTime",
     direction: "asc",
   });
 
   useEffect(() => {
-    const fetchStationData = async () => {
+    const fetchJourneyData = async () => {
       try {
         const sortParam = `${sortConfig.key},${sortConfig.direction}`;
         const data = await fetchData("journeys", page - 1, 10, sortParam);
         setData(data.content);
         setTotalPages(data.totalPages);
       } catch (error) {
-        console.error("Error fetching station data:", error);
+        console.error("Error fetching journey data:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchStationData();
+    fetchJourneyData();
   }, [page, sortConfig]);
 
   const handleSort = (columnId) => {
-    setIsLoading(true);
+    const column = columns.find((col) => col.id === columnId);
+    if (!column.sortable) return;
+
     let direction = "asc";
+    setIsLoading(true);
     if (sortConfig.key === columnId) {
       direction = sortConfig.direction === "asc" ? "desc" : "asc";
     }
@@ -110,9 +125,8 @@ export default function JourneyTable() {
       ) : (
         <ArrowUpwardIcon fontSize="small" />
       );
-    } else {
-      return <ArrowUpwardIcon fontSize="small" color="disabled" />;
     }
+    return <ArrowUpwardIcon fontSize="small" color="disabled" />;
   };
 
   const handleChangePage = (event, value) => {
@@ -149,46 +163,51 @@ export default function JourneyTable() {
                   {columns.map((column) => (
                     <TableCell
                       key={column.id}
-                      style={{ minWidth: column.minWidth, cursor: "pointer" }}
+                      style={{
+                        minWidth: column.minWidth,
+                        cursor: column.sortable ? "pointer" : "default",
+                        whiteSpace: "nowrap", // Prevent text wrapping
+                        overflow: "hidden",
+                        textOverflow: "ellipsis", // Add ellipsis for long text
+                      }}
                       onClick={() => handleSort(column.id)}
                     >
-                      {column.label} {renderSortIcon(column.id)}
+                      {column.label}{" "}
+                      {column.sortable && renderSortIcon(column.id)}
                     </TableCell>
                   ))}
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((row, index) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        if (
-                          column.id === "departureStation" ||
-                          column.id === "returnStation"
-                        ) {
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              <Button
-                                variant="contained"
-                                size="small"
-                                sx={{ minWidth: 100 }}
-                                onClick={() => handleStationClick(value.id)}
-                              >
-                                {value.name}
-                              </Button>
-                            </TableCell>
-                          );
-                        }
+                {data.map((row, index) => (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                    {columns.map((column) => {
+                      const value = row[column.id];
+                      if (
+                        column.id === "departureStation" ||
+                        column.id === "returnStation"
+                      ) {
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            {column.format ? column.format(value) : value}
+                            <Button
+                              variant="contained"
+                              size="small"
+                              sx={{ minWidth: 100 }}
+                              onClick={() => handleStationClick(value.id)}
+                            >
+                              {value.name}
+                            </Button>
                           </TableCell>
                         );
-                      })}
-                    </TableRow>
-                  );
-                })}
+                      }
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format ? column.format(value) : value}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
