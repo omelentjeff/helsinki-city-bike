@@ -15,10 +15,11 @@ import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
-function formatToMinsAndSeconds(duration) {
-  const minutes = Math.floor((duration % 3600) / 60);
-  const seconds = duration % 60;
-  return `${minutes}m ${seconds}s`;
+function formatToHMS(durationInSeconds) {
+  const hours = Math.floor(durationInSeconds / 3600);
+  const minutes = Math.floor((durationInSeconds % 3600) / 60);
+  const seconds = durationInSeconds % 60;
+  return `${hours}h ${minutes}m ${seconds}s`;
 }
 
 function formatDateTime(dateTime) {
@@ -71,7 +72,7 @@ const columns = [
     label: "Duration",
     minWidth: 120,
     align: "right",
-    format: formatToMinsAndSeconds,
+    format: formatToHMS,
     sortable: true,
   },
 ];
