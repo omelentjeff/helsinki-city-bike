@@ -107,7 +107,14 @@ export default function StationTable() {
                     column.id !== "details" ? (
                       <TableCell
                         key={column.id}
-                        style={{ minWidth: column.minWidth, cursor: "pointer" }}
+                        style={{
+                          minWidth: column.minWidth,
+                          cursor: "pointer",
+                          fontWeight: "bold",
+                          backgroundColor: "#f5f5f5",
+                          color: "#333",
+                          //borderBottom: "2px solid #ddd",
+                        }}
                         onClick={() => handleSort(column.id)}
                       >
                         {column.label} {renderSortIcon(column.id)}
@@ -115,7 +122,12 @@ export default function StationTable() {
                     ) : (
                       <TableCell
                         key={column.id}
-                        style={{ minWidth: column.minWidth }}
+                        style={{
+                          minWidth: column.minWidth,
+                          fontWeight: "bold",
+                          backgroundColor: "#f5f5f5",
+                          color: "#333",
+                        }}
                       >
                         {column.label}
                       </TableCell>

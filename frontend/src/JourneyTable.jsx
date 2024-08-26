@@ -167,9 +167,12 @@ export default function JourneyTable() {
                       style={{
                         minWidth: column.minWidth,
                         cursor: column.sortable ? "pointer" : "default",
-                        whiteSpace: "nowrap", // Prevent text wrapping
+                        whiteSpace: "nowrap",
                         overflow: "hidden",
-                        textOverflow: "ellipsis", // Add ellipsis for long text
+                        textOverflow: "ellipsis",
+                        fontWeight: "bold",
+                        backgroundColor: "#f5f5f5",
+                        color: "#333",
                       }}
                       onClick={() => handleSort(column.id)}
                     >
