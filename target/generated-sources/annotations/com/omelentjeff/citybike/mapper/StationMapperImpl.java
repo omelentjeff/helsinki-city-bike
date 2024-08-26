@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-08-14T19:56:23+0300",
+    date = "2024-08-22T12:57:50+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 21.0.1 (Eclipse Adoptium)"
 )
 @Component
@@ -25,6 +25,8 @@ public class StationMapperImpl implements StationMapper {
         stationDTO.setName( station.getName() );
         stationDTO.setAddress( station.getAddress() );
         stationDTO.setCity( station.getCity() );
+        stationDTO.setX( station.getX() );
+        stationDTO.setY( station.getY() );
 
         return stationDTO;
     }
@@ -41,6 +43,8 @@ public class StationMapperImpl implements StationMapper {
         station.setName( stationDTO.getName() );
         station.setAddress( stationDTO.getAddress() );
         station.setCity( stationDTO.getCity() );
+        station.setX( stationDTO.getX() );
+        station.setY( stationDTO.getY() );
 
         return station;
     }
