@@ -27,6 +27,9 @@ replay_pid*
 backend/.env
 frontend/.env
 
+# Ignore Docker environment files
+.env
+
 .DS_Store
 
 .idea/
