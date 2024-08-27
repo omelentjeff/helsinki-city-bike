@@ -4,8 +4,8 @@ services:
   db:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: CitybikePW1!
-      MYSQL_DATABASE: city_bike
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
     ports:
       - "3306:3306"
     volumes:
@@ -18,15 +18,15 @@ services:
   db-init:
     build:
       context: ./backend
-      dockerfile: data/data-import/Dockerfile
+      dockerfile: data/data_import/Dockerfile
     depends_on:
       db:
         condition: service_healthy
     environment:
-      - DB_HOST=db
-      - DB_USER=root
-      - DB_PASSWORD=CitybikePW1!
-      - DB_NAME=city_bike
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
     networks:
       - default
 
@@ -37,7 +37,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - DATABASE_URL=mysql://root:CitybikePW1!@db/city_bike
+      - DATABASE_URL=${DATABASE_URL}
     networks:
       - default
 
