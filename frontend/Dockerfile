@@ -10,10 +10,8 @@ COPY . .
 
 RUN npm run build
 
-# Stage 2: Serve the application
 FROM nginx:alpine
 
-# Copy the build artifacts from the build stage
 COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80

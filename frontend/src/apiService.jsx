@@ -1,3 +1,5 @@
+const apiBaseUrl = import.meta.env.VITE_API_URL;
+
 export const fetchData = async (
   endpoint,
   page = 0,
@@ -5,9 +7,11 @@ export const fetchData = async (
   sort = ""
 ) => {
   try {
+    console.log("API Base URL:", apiBaseUrl); // Add this line to check the value
     const response = await fetch(
-      `http://localhost:8080/api/${endpoint}?page=${page}&size=${pageSize}&sort=${sort}`
+      `${apiBaseUrl}/${endpoint}?page=${page}&size=${pageSize}&sort=${sort}`
     );
+
     const data = await response.json();
     return data;
   } catch (error) {
@@ -39,7 +43,7 @@ export const fetchAllData = async (endpoint) => {
 
 export const fetchSingleData = async (endpoint, id) => {
   try {
-    const response = await fetch(`http://localhost:8080/api/${endpoint}/${id}`);
+    const response = await fetch(`${apiBaseUrl}/${endpoint}/${id}`);
     const data = await response.json();
     return data;
   } catch (error) {

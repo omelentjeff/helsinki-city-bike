@@ -36,6 +36,6 @@ frontend/.env
 
 /frontend/node_modules
 
-/backend/data/bike_data/journeys_data/original_journeys_data/2021-05.csv
-/backend/data/bike_data/journeys_data/original_journeys_data/2021-06.csv
-/backend/data/bike_data/journeys_data/original_journeys_data/2021-07.csv
+data/bike_data/journeys_data/original_journeys_data/2021-05.csv
+data/bike_data/journeys_data/original_journeys_data/2021-06.csv
+data/bike_data/journeys_data/original_journeys_data/2021-07.csv
