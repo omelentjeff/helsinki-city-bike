@@ -1,12 +1,24 @@
-# Use a base image with Java 21
+# Stage 1: Build the application
+FROM maven:3.9-openjdk-21 AS build
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the project files to the container
+COPY pom.xml ./
+COPY src ./src
+
+# Build the project (this will create the target/*.jar file)
+RUN mvn clean package
+
+# Stage 2: Run the application
 FROM openjdk:21
 
-# Copy the JAR package into the image
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} app.jar
+# Copy the jar from the previous stage
+COPY --from=build /app/target/*.jar app.jar
 
 # Expose the application port
 EXPOSE 8080
 
-# Run the App
+# Run the app
 ENTRYPOINT ["java", "-jar", "/app.jar"]
