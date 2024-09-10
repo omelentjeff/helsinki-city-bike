@@ -5,6 +5,7 @@ import com.omelentjeff.citybike.entity.Journey;
 import com.omelentjeff.citybike.exception.JourneyNotFoundException;
 import com.omelentjeff.citybike.mapper.JourneyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +28,7 @@ public class JourneyService {
         this.journeyMapper = journeyMapper;
     }
 
+    @Cacheable(value = "journeys", key = "#pageable.pageNumber")
     public Page<JourneyDTO> getAllJourneys(Pageable pageable) {
         Page<Journey> journeyPage = journeyRepository.findAll(pageable);
         List<JourneyDTO> journeyDTOS = journeyPage.stream()
@@ -36,6 +38,7 @@ public class JourneyService {
         return new PageImpl<>(journeyDTOS, pageable, journeyPage.getTotalElements());
     }
 
+    @Cacheable(value = "journey", key = "#id")
     public JourneyDTO getJourneyById(long id) {
         Journey tempJourney = journeyRepository.findById(id).orElseThrow(() -> new JourneyNotFoundException("Journey with id: " + id + " not found"));
         return journeyMapper.toDTO(tempJourney);
