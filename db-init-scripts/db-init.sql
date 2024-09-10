@@ -26,6 +26,13 @@ CREATE TABLE IF NOT EXISTS journeys (
     FOREIGN KEY (return_station_id) REFERENCES stations(id)
 );
 
+-- Add indexes to the frequently queried columns
+CREATE INDEX idx_departure_station ON journeys(departure_station_id);
+CREATE INDEX idx_return_station ON journeys(return_station_id);
+CREATE INDEX idx_departure_time ON journeys(departure);
+CREATE INDEX idx_return_time ON journeys(`return`);
+
+
 DROP USER IF EXISTS 'citybike'@'%';
 -- Create the user and grant privileges
 CREATE USER 'citybike'@'%' IDENTIFIED BY 'CitybikePW1!';
