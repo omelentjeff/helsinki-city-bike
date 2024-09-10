@@ -9,6 +9,7 @@ import com.omelentjeff.citybike.exception.StationNotFoundException;
 import com.omelentjeff.citybike.mapper.StationMapper;
 import com.omelentjeff.citybike.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ public class StationService {
         this.stationMapper = stationMapper;
     }
 
+    @Cacheable(value = "stations", key = "#pageable.pageNumber")
     public Page<StationDTO> getAllStations(Pageable pageable) {
         Page<Station> stationPage = stationRepository.findAll(pageable);
         List<StationDTO> stationDTOs = stationPage.stream()
@@ -38,6 +40,7 @@ public class StationService {
         return new PageImpl<>(stationDTOs, pageable, stationPage.getTotalElements());
     }
 
+    @Cacheable(value = "station", key = "#id")
     public StationDTO getStationById(long id) {
         Station tempStation = stationRepository.findById(id).orElseThrow(() -> new StationNotFoundException("Station with id: " + id + " not found"));
         return stationMapper.toDTO(tempStation);
