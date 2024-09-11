@@ -9,11 +9,12 @@ import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { fetchData } from "./apiService";
-import { CircularProgress } from "@mui/material";
+import { fetchData, fetchSearchData } from "./apiService";
+import { CircularProgress, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Search from "./Search";
 
 const columns = [
   { id: "name", label: "Station Name", minWidth: 170 },
@@ -33,12 +34,19 @@ export default function StationTable() {
     key: "name",
     direction: "asc",
   });
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     const fetchStationData = async () => {
       try {
-        const sortParam = `${sortConfig.key},${sortConfig.direction}`;
-        const data = await fetchData("stations", page - 1, 10, sortParam);
+        let data;
+        if (query) {
+          console.log("Query is present");
+          data = await fetchSearchData("stations", query);
+        } else {
+          const sortParam = `${sortConfig.key},${sortConfig.direction}`;
+          data = await fetchData("stations", page - 1, 10, sortParam);
+        }
         setData(data.content);
         setTotalPages(data.totalPages);
       } catch (error) {
@@ -49,7 +57,7 @@ export default function StationTable() {
     };
 
     fetchStationData();
-  }, [page, sortConfig]);
+  }, [page, sortConfig, query]);
 
   const handleSort = (columnId) => {
     let direction = "asc";
@@ -84,89 +92,96 @@ export default function StationTable() {
   };
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      {isLoading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "flex-start",
-            marginTop: 20,
-            height: "100vh",
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      ) : (
-        <>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) =>
-                    column.id !== "details" ? (
-                      <TableCell
-                        key={column.id}
-                        style={{
-                          minWidth: column.minWidth,
-                          cursor: "pointer",
-                          fontWeight: "bold",
-                          backgroundColor: "#f5f5f5",
-                          color: "#333",
-                          //borderBottom: "2px solid #ddd",
-                        }}
-                        onClick={() => handleSort(column.id)}
-                      >
-                        {column.label} {renderSortIcon(column.id)}
-                      </TableCell>
-                    ) : (
-                      <TableCell
-                        key={column.id}
-                        style={{
-                          minWidth: column.minWidth,
-                          fontWeight: "bold",
-                          backgroundColor: "#f5f5f5",
-                          color: "#333",
-                        }}
-                      >
-                        {column.label}
-                      </TableCell>
-                    )
-                  )}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((row, index) => (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column) => (
-                      <TableCell key={column.id}>
-                        {column.id !== "details" ? (
-                          row[column.id]
-                        ) : (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleShowDetails(row)}
-                          >
-                            Show Details
-                          </Button>
-                        )}
-                      </TableCell>
-                    ))}
+    <>
+      <Search setQuery={setQuery} />
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        {isLoading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "flex-start",
+              marginTop: 20,
+              height: "100vh",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : data.length === 0 ? ( // Check if there are no results
+          <Typography variant="h6" align="center" sx={{ padding: 4 }}>
+            No results found
+          </Typography>
+        ) : (
+          <>
+            <TableContainer sx={{ maxHeight: 440 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) =>
+                      column.id !== "details" ? (
+                        <TableCell
+                          key={column.id}
+                          style={{
+                            minWidth: column.minWidth,
+                            cursor: "pointer",
+                            fontWeight: "bold",
+                            backgroundColor: "#f5f5f5",
+                            color: "#333",
+                            //borderBottom: "2px solid #ddd",
+                          }}
+                          onClick={() => handleSort(column.id)}
+                        >
+                          {column.label} {renderSortIcon(column.id)}
+                        </TableCell>
+                      ) : (
+                        <TableCell
+                          key={column.id}
+                          style={{
+                            minWidth: column.minWidth,
+                            fontWeight: "bold",
+                            backgroundColor: "#f5f5f5",
+                            color: "#333",
+                          }}
+                        >
+                          {column.label}
+                        </TableCell>
+                      )
+                    )}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <Pagination
-            count={totalPages}
-            page={page}
-            onChange={handleChangePage}
-            color="primary"
-            sx={{ display: "flex", justifyContent: "center", padding: 2 }}
-          />
-        </>
-      )}
-    </Paper>
+                </TableHead>
+                <TableBody>
+                  {data.map((row, index) => (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                      {columns.map((column) => (
+                        <TableCell key={column.id}>
+                          {column.id !== "details" ? (
+                            row[column.id]
+                          ) : (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => handleShowDetails(row)}
+                            >
+                              Show Details
+                            </Button>
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <Pagination
+              count={totalPages}
+              page={page}
+              onChange={handleChangePage}
+              color="primary"
+              sx={{ display: "flex", justifyContent: "center", padding: 2 }}
+            />
+          </>
+        )}
+      </Paper>
+    </>
   );
 }
