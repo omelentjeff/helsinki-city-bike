@@ -16,7 +16,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 
-export default function Search({ setQuery }) {
+export default function Search({ setQuery, resetQuery }) {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -50,6 +50,7 @@ export default function Search({ setQuery }) {
     setInput("");
     setSuggestions([]);
     setShowSuggestions(false);
+    resetQuery();
   };
 
   const handleSuggestionClick = (suggestion) => {
@@ -60,6 +61,7 @@ export default function Search({ setQuery }) {
     setShowSuggestions(false);
   };
 
+  /*
   const handleSearch = (e) => {
     e.preventDefault();
     console.log("Search query:", input);
@@ -67,13 +69,21 @@ export default function Search({ setQuery }) {
     setInput("");
     setShowSuggestions(false);
   };
+  */
 
   return (
-    <Box sx={{ width: "100%", maxWidth: 500, margin: "auto", mt: 4 }}>
-      <form onSubmit={handleSearch}>
-        {/* Grid to align the input and button */}
+    <Box
+      sx={{
+        width: "100%",
+        maxWidth: 500,
+        margin: "auto",
+        mt: 4,
+        position: "relative",
+      }}
+    >
+      <form onSubmit={(e) => e.preventDefault()}>
         <Grid container spacing={1}>
-          <Grid item xs={9}>
+          <Grid item xs={12}>
             <TextField
               fullWidth
               variant="outlined"
@@ -97,23 +107,36 @@ export default function Search({ setQuery }) {
             />
           </Grid>
         </Grid>
-      </form>
 
-      {showSuggestions && suggestions.length > 0 && (
-        <Paper elevation={3} sx={{ mt: 2, position: "relative" }}>
-          <List>
-            {suggestions.map((suggestion, index) => (
-              <ListItem
-                key={index}
-                button
-                onClick={() => handleSuggestionClick(suggestion)}
-              >
-                <ListItemText primary={suggestion.name} />
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
-      )}
+        {/* Suggestion dropdown */}
+        {showSuggestions && suggestions.length > 0 && (
+          <Paper
+            elevation={3}
+            sx={{
+              position: "absolute", // Make it float over the content
+              top: "64px", // Adjust to align with the input field height
+              width: "100%", // Ensure the suggestions fit the input field's width
+              zIndex: 10,
+              maxHeight: 400, // Limit the max height
+              overflowY: "auto", // Add scrolling for long suggestion lists
+              borderRadius: 1,
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Add a subtle shadow
+            }}
+          >
+            <List dense>
+              {suggestions.map((suggestion, index) => (
+                <ListItem
+                  key={index}
+                  button
+                  onClick={() => handleSuggestionClick(suggestion)}
+                >
+                  <ListItemText primary={suggestion.name} />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        )}
+      </form>
     </Box>
   );
 }

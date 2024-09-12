@@ -59,6 +59,11 @@ export default function StationTable() {
     fetchStationData();
   }, [page, sortConfig, query]);
 
+  const resetQuery = () => {
+    setQuery("");
+    setPage(1);
+  };
+
   const handleSort = (columnId) => {
     let direction = "asc";
     if (sortConfig.key === columnId) {
@@ -94,7 +99,7 @@ export default function StationTable() {
   return (
     <>
       <Box sx={{ mb: 4 }}>
-        <Search setQuery={setQuery} />
+        <Search setQuery={setQuery} resetQuery={resetQuery} />
       </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         {isLoading ? (
