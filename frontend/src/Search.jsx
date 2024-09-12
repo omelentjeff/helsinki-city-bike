@@ -1,6 +1,20 @@
 import { useState, useMemo } from "react";
 import { debounce } from "lodash";
 import { fetchSearchData } from "./apiService";
+import {
+  TextField,
+  InputAdornment,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Box,
+  Grid,
+  IconButton,
+} from "@mui/material";
+
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export default function Search({ setQuery }) {
   const [input, setInput] = useState("");
@@ -32,6 +46,12 @@ export default function Search({ setQuery }) {
     fetchSuggestions(e.target.value);
   };
 
+  const handleClearInput = () => {
+    setInput("");
+    setSuggestions([]);
+    setShowSuggestions(false);
+  };
+
   const handleSuggestionClick = (suggestion) => {
     console.log("Suggestion clicked:", suggestion);
     setInput(suggestion.name);
@@ -49,40 +69,51 @@ export default function Search({ setQuery }) {
   };
 
   return (
-    <div>
-      <h1>Search</h1>
+    <Box sx={{ width: "100%", maxWidth: 500, margin: "auto", mt: 4 }}>
       <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={input}
-          onChange={handleInputChange}
-          placeholder="Search..."
-        />
-        <button type="submit">Search</button>
-      </form>
-      {showSuggestions && suggestions.length > 0 && (
-        <ul
-          style={{
-            border: "1px solid #ccc",
-            listStyleType: "none",
-            padding: 0,
-          }}
-        >
-          {suggestions.map((suggestion, index) => (
-            <li
-              key={index}
-              onClick={() => handleSuggestionClick(suggestion)}
-              style={{
-                padding: "10px",
-                cursor: "pointer",
-                backgroundColor: "#f9f9f9",
+        {/* Grid to align the input and button */}
+        <Grid container spacing={1}>
+          <Grid item xs={9}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Search stations"
+              value={input}
+              onChange={handleInputChange}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: input && (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleClearInput}>
+                      <ClearIcon />
+                    </IconButton>
+                  </InputAdornment>
+                ),
               }}
-            >
-              {suggestion.name}
-            </li>
-          ))}
-        </ul>
+            />
+          </Grid>
+        </Grid>
+      </form>
+
+      {showSuggestions && suggestions.length > 0 && (
+        <Paper elevation={3} sx={{ mt: 2, position: "relative" }}>
+          <List>
+            {suggestions.map((suggestion, index) => (
+              <ListItem
+                key={index}
+                button
+                onClick={() => handleSuggestionClick(suggestion)}
+              >
+                <ListItemText primary={suggestion.name} />
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
       )}
-    </div>
+    </Box>
   );
 }

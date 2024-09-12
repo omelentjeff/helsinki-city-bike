@@ -93,7 +93,9 @@ export default function StationTable() {
 
   return (
     <>
-      <Search setQuery={setQuery} />
+      <Box sx={{ mb: 4 }}>
+        <Search setQuery={setQuery} />
+      </Box>
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         {isLoading ? (
           <Box
