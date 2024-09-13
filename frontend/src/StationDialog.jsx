@@ -9,6 +9,8 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import MapComponent from "./StationMap";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { Box, Grid } from "@mui/material";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -38,8 +40,19 @@ export default function StationDialog({ station }) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        fullWidth="true"
+        maxWidth="md"
       >
-        <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+        <DialogTitle
+          sx={{
+            m: 0,
+            p: 2,
+            textAlign: "center",
+            fontWeight: "bold",
+            fontSize: 24,
+          }}
+          id="customized-dialog-title"
+        >
           {station.name}
         </DialogTitle>
         <IconButton
@@ -55,15 +68,68 @@ export default function StationDialog({ station }) {
           <CloseIcon />
         </IconButton>
         <DialogContent dividers>
-          <Typography gutterBottom>{station.address}</Typography>
-          <Typography gutterBottom>
+          <Grid
+            container
+            spacing={2}
+            sx={{ mb: 4 }}
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Grid
+              item
+              xs={6}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Box sx={{ display: "flex" }}>
+                <LocationOnIcon sx={{ color: "blue", mr: 0.2 }} />
+                <Typography align="center">{station.address}</Typography>
+              </Box>
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography align="center">Other Info 1</Typography>
+            </Grid>
+
+            <Grid
+              item
+              xs={6}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography align="center">Other Info 2</Typography>
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Typography align="center">Other Info 3</Typography>
+            </Grid>
+          </Grid>
+          <Box>
+            {" "}
+            {/* Adjust the margin as needed */}
             <MapComponent station={station} />
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo
-            cursus magna, vel scelerisque nisl consectetur et. Donec sed odio
-            dui. Donec ullamcorper nulla non metus auctor fringilla.
-          </Typography>
+          </Box>
         </DialogContent>
       </BootstrapDialog>
     </React.Fragment>
