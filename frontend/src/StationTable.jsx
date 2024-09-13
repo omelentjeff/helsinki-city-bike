@@ -15,6 +15,7 @@ import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Search from "./Search";
+import StationDialog from "./StationDialog";
 
 const columns = [
   { id: "name", label: "Station Name", minWidth: 170 },
@@ -164,13 +165,7 @@ export default function StationTable() {
                           {column.id !== "details" ? (
                             row[column.id]
                           ) : (
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => handleShowDetails(row)}
-                            >
-                              Show Details
-                            </Button>
+                            <StationDialog station={row} />
                           )}
                         </TableCell>
                       ))}
