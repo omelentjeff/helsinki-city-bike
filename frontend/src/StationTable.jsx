@@ -115,10 +115,6 @@ export default function StationTable() {
           >
             <CircularProgress />
           </Box>
-        ) : data.length === 0 ? ( // Check if there are no results
-          <Typography variant="h6" align="center" sx={{ padding: 4 }}>
-            No results found
-          </Typography>
         ) : (
           <>
             <TableContainer sx={{ maxHeight: 440 }}>

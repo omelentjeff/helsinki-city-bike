@@ -11,6 +11,7 @@ import {
   Box,
   Grid,
   IconButton,
+  Typography,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
@@ -109,7 +110,7 @@ export default function Search({ setQuery, resetQuery }) {
         </Grid>
 
         {/* Suggestion dropdown */}
-        {showSuggestions && suggestions.length > 0 && (
+        {showSuggestions && (
           <Paper
             elevation={3}
             sx={{
@@ -124,15 +125,21 @@ export default function Search({ setQuery, resetQuery }) {
             }}
           >
             <List dense>
-              {suggestions.map((suggestion, index) => (
-                <ListItem
-                  key={index}
-                  button
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  <ListItemText primary={suggestion.name} />
+              {suggestions.length === 0 ? (
+                <ListItem>
+                  <ListItemText>No results found</ListItemText>
                 </ListItem>
-              ))}
+              ) : (
+                suggestions.map((suggestion, index) => (
+                  <ListItem
+                    key={index}
+                    button
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    <ListItemText primary={suggestion.name} />
+                  </ListItem>
+                ))
+              )}
             </List>
           </Paper>
         )}
