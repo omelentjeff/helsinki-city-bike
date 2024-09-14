@@ -61,7 +61,7 @@ export default function StationDialog({ station }) {
               justifyContent: "center",
             }}
           >
-            <LocationOnIcon sx={{ color: "blue", mr: 1 }} />
+            <LocationOnIcon sx={{ color: "blue", mr: 1, fontSize: "32px" }} />
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Typography
                 align="center"
@@ -105,7 +105,18 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#E3F2FD",
+                  color: "#333",
+                  borderRadius: "10px",
+                  p: 0.6,
+                  width: "80%",
+                  textAlign: "center",
+                }}
+              >
                 <Typography
                   align="center"
                   sx={{ fontWeight: "bold", color: "#333" }}
@@ -126,7 +137,18 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#E3F2FD",
+                  color: "#333",
+                  borderRadius: "10px",
+                  p: 0.6,
+                  width: "80%",
+                  textAlign: "center",
+                }}
+              >
                 <Typography
                   align="center"
                   sx={{ fontWeight: "bold", color: "#333" }}
@@ -148,7 +170,18 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#E3F2FD",
+                  color: "#333",
+                  borderRadius: "10px",
+                  p: 0.6,
+                  width: "80%",
+                  textAlign: "center",
+                }}
+              >
                 <Typography
                   align="center"
                   sx={{ fontWeight: "bold", color: "#333" }}
@@ -169,7 +202,18 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "#E3F2FD",
+                  color: "#333",
+                  borderRadius: "10px",
+                  p: 0.6,
+                  width: "80%",
+                  textAlign: "center",
+                }}
+              >
                 <Typography
                   align="center"
                   sx={{ fontWeight: "bold", color: "#333" }}
