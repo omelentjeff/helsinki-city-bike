@@ -23,6 +23,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 export default function StationDialog({ station, text }) {
   const [open, setOpen] = React.useState(false);
+  const [fullWidth, setFullWidth] = React.useState(true);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,7 +41,7 @@ export default function StationDialog({ station, text }) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        fullWidth="true"
+        fullWidth={fullWidth}
         maxWidth="md"
       >
         <DialogTitle
