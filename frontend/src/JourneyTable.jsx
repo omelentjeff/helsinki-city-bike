@@ -38,41 +38,41 @@ const columns = [
   {
     id: "departureTime",
     label: "Departure Time",
-    minWidth: 150,
+    minWidth: 120,
     format: formatDateTime,
     sortable: true,
   },
   {
     id: "returnTime",
     label: "Return Time",
-    minWidth: 150,
+    minWidth: 160,
     format: formatDateTime,
     sortable: true,
   },
   {
     id: "departureStation",
     label: "Departure Station",
-    minWidth: 140,
+    minWidth: 60,
     sortable: false,
   },
   {
     id: "returnStation",
     label: "Return Station",
-    minWidth: 140,
+    minWidth: 60,
     sortable: false,
   },
   {
     id: "coveredDistance",
     label: "Covered Distance (m)",
-    minWidth: 120,
-    align: "right",
+    minWidth: 40,
+    align: "center",
     sortable: true,
   },
   {
     id: "duration",
     label: "Duration",
-    minWidth: 120,
-    align: "right",
+    minWidth: 60,
+    align: "center",
     format: formatToHMS,
     sortable: true,
   },
@@ -134,12 +134,6 @@ export default function JourneyTable() {
   const handleChangePage = (event, value) => {
     setIsLoading(true);
     setPage(value);
-  };
-
-  const handleStationClick = (stationId) => {
-    navigate(`/stations/${stationId}`, {
-      state: { from: "journeys", page: page },
-    });
   };
 
   return (
