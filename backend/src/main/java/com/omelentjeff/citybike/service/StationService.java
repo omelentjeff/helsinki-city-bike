@@ -30,7 +30,7 @@ public class StationService {
         this.stationMapper = stationMapper;
     }
 
-    @Cacheable(value = "stations", key = "#pageable.pageNumber")
+    @Cacheable(value = "stations", key = "'page:' + #pageable.pageNumber + ',size:' + #pageable.pageSize + ',sort:' + #pageable.sort.toString()")
     public Page<StationDTO> getAllStations(Pageable pageable) {
         Page<Station> stationPage = stationRepository.findAll(pageable);
         List<StationDTO> stationDTOs = stationPage.stream()

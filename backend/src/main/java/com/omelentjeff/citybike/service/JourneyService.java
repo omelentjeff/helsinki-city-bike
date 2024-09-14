@@ -28,7 +28,7 @@ public class JourneyService {
         this.journeyMapper = journeyMapper;
     }
 
-    @Cacheable(value = "journeys", key = "#pageable.pageNumber")
+    @Cacheable(value = "journeys", key = "'page:' + #pageable.pageNumber + ',size:' + #pageable.pageSize + ',sort:' + #pageable.sort.toString()")
     public Page<JourneyDTO> getAllJourneys(Pageable pageable) {
         Page<Journey> journeyPage = journeyRepository.findAll(pageable);
         List<JourneyDTO> journeyDTOS = journeyPage.stream()
