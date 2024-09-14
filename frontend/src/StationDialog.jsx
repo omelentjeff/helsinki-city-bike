@@ -21,7 +21,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function StationDialog({ station }) {
+export default function StationDialog({ station, text }) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -34,7 +34,7 @@ export default function StationDialog({ station }) {
   return (
     <React.Fragment>
       <Button variant="outlined" onClick={handleClickOpen}>
-        Show Details
+        {text}
       </Button>
       <BootstrapDialog
         onClose={handleClose}

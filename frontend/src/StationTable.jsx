@@ -79,12 +79,6 @@ export default function StationTable() {
     setPage(value);
   };
 
-  const handleShowDetails = (row) => {
-    navigate(`/stations/${row.id}`, {
-      state: { from: "stations", page: page },
-    });
-  };
-
   const renderSortIcon = (columnId) => {
     if (sortConfig.key === columnId) {
       return sortConfig.direction === "asc" ? (
@@ -161,7 +155,7 @@ export default function StationTable() {
                           {column.id !== "details" ? (
                             row[column.id]
                           ) : (
-                            <StationDialog station={row} />
+                            <StationDialog station={row} text="Show Details" />
                           )}
                         </TableCell>
                       ))}

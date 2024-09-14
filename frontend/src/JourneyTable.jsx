@@ -14,6 +14,7 @@ import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import StationDialog from "./StationDialog";
 
 function formatToHMS(durationInSeconds) {
   const hours = Math.floor(durationInSeconds / 3600);
@@ -193,14 +194,7 @@ export default function JourneyTable() {
                       ) {
                         return (
                           <TableCell key={column.id} align={column.align}>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              sx={{ minWidth: 100 }}
-                              onClick={() => handleStationClick(value.id)}
-                            >
-                              {value.name}
-                            </Button>
+                            <StationDialog station={value} text={value.name} />
                           </TableCell>
                         );
                       }
