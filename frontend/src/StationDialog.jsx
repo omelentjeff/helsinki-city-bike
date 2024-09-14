@@ -50,10 +50,30 @@ export default function StationDialog({ station }) {
             textAlign: "center",
             fontWeight: "bold",
             fontSize: 24,
+            color: "#333",
           }}
           id="customized-dialog-title"
         >
-          {station.name}
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <LocationOnIcon sx={{ color: "blue", mr: 1 }} />
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <Typography
+                align="center"
+                sx={{ color: "#333", fontWeight: "bold" }}
+              >
+                {station.name}
+              </Typography>
+              <Typography align="center" sx={{ color: "#555" }}>
+                {station.address}
+              </Typography>
+            </Box>
+          </Box>
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -71,7 +91,7 @@ export default function StationDialog({ station }) {
           <Grid
             container
             spacing={2}
-            sx={{ mb: 4 }}
+            sx={{ mb: 2 }}
             justifyContent="center"
             alignItems="center"
           >
@@ -85,9 +105,16 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Box sx={{ display: "flex" }}>
-                <LocationOnIcon sx={{ color: "blue", mr: 0.2 }} />
-                <Typography align="center">{station.address}</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "#333" }}
+                >
+                  Average journey time starting
+                </Typography>
+                <Typography align="center" sx={{ color: "#555" }}>
+                  55m
+                </Typography>
               </Box>
             </Grid>
             <Grid
@@ -99,7 +126,17 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Typography align="center">Other Info 1</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "#333" }}
+                >
+                  Average journey time starting
+                </Typography>
+                <Typography align="center" sx={{ color: "#555" }}>
+                  55m
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid
@@ -111,7 +148,17 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Typography align="center">Other Info 2</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "#333" }}
+                >
+                  Average journey time starting
+                </Typography>
+                <Typography align="center" sx={{ color: "#555" }}>
+                  55m
+                </Typography>
+              </Box>
             </Grid>
             <Grid
               item
@@ -122,7 +169,17 @@ export default function StationDialog({ station }) {
                 alignItems: "center",
               }}
             >
-              <Typography align="center">Other Info 3</Typography>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography
+                  align="center"
+                  sx={{ fontWeight: "bold", color: "#333" }}
+                >
+                  Average journey time starting
+                </Typography>
+                <Typography align="center" sx={{ color: "#555" }}>
+                  55m
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
           <Box>
