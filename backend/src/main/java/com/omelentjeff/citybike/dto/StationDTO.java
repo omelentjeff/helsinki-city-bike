@@ -15,4 +15,8 @@ public class StationDTO {
     private String city;
     private float x;
     private float y;
+    private int numberOfJourneysStarting;
+    private int numberOfJourneysReturning;
+    private double averageDepartingJourneyDistance;
+    private double averageReturningJourneyDistance;
 }
