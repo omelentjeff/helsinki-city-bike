@@ -8,28 +8,20 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Pagination from "@mui/material/Pagination";
 import Button from "@mui/material/Button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { fetchData } from "./apiService";
 import { CircularProgress } from "@mui/material";
 import Box from "@mui/material/Box";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import StationDialog from "./StationDialog";
-
-function formatToHMS(durationInSeconds) {
-  const hours = Math.floor(durationInSeconds / 3600);
-  const minutes = Math.floor((durationInSeconds % 3600) / 60);
-  const seconds = durationInSeconds % 60;
-  return `${hours}h ${minutes}m ${seconds}s`;
-}
+import JourneyDialog from "./JourneyDialog";
 
 function formatDateTime(dateTime) {
   const options = {
     year: "numeric",
     month: "numeric",
     day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
   };
   return new Date(dateTime).toLocaleString("en-US", options);
 }
@@ -61,25 +53,10 @@ const columns = [
     minWidth: 60,
     sortable: false,
   },
-  {
-    id: "coveredDistance",
-    label: "Covered Distance (m)",
-    minWidth: 40,
-    align: "center",
-    sortable: true,
-  },
-  {
-    id: "duration",
-    label: "Duration",
-    minWidth: 60,
-    align: "center",
-    format: formatToHMS,
-    sortable: true,
-  },
+  { id: "details", label: "Details", minWidth: 50 },
 ];
 
 export default function JourneyTable() {
-  const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -194,7 +171,15 @@ export default function JourneyTable() {
                       }
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format ? column.format(value) : value}
+                          {column.id !== "details" ? (
+                            column.format ? (
+                              column.format(value)
+                            ) : (
+                              value
+                            )
+                          ) : (
+                            <JourneyDialog journey={row} text="Show Details" />
+                          )}
                         </TableCell>
                       );
                     })}

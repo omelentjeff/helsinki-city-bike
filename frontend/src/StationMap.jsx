@@ -12,7 +12,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
 });
 
-const MapComponent = ({ station }) => {
+const StationMap = ({ station }) => {
   const position = [station.y, station.x];
 
   return (
@@ -34,6 +34,6 @@ const MapComponent = ({ station }) => {
   );
 };
 
-export default MapComponent;
+export default StationMap;
 
 // TODO SORTING DOESN'T WORK BECAUSE OF CACHE

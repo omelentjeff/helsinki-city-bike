@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import MapComponent from "./StationMap";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Box, Grid } from "@mui/material";
+import StationMap from "./StationMap";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -230,7 +231,7 @@ export default function StationDialog({ station, text }) {
           <Box>
             {" "}
             {/* Adjust the margin as needed */}
-            <MapComponent station={station} />
+            <StationMap station={station} />
           </Box>
         </DialogContent>
       </BootstrapDialog>
