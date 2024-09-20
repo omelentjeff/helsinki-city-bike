@@ -47,11 +47,13 @@ public class StationService {
         int totalJourneysStarting = getTotalNumberOfJourneysStarting(tempStation);
         int totalJourneysEnding = getTotalNumberOfJourneysReturning(tempStation);
         double averageDepartingJourneysDistance = getAverageDepartingJourneyDistance(tempStation);
+        double averageReturningJourneysDistance = getAverageReturningJourneyDistance(tempStation);
 
         StationDTO stationDTO = stationMapper.toDTO(tempStation);
         stationDTO.setNumberOfJourneysStarting(totalJourneysStarting);
         stationDTO.setNumberOfJourneysReturning(totalJourneysEnding);
-        stationDTO.setAverageReturningJourneyDistance(averageDepartingJourneysDistance);
+        stationDTO.setAverageDepartingJourneyDistance(averageDepartingJourneysDistance);
+        stationDTO.setAverageReturningJourneyDistance(averageReturningJourneysDistance);
 
         return stationDTO;
     }
@@ -77,6 +79,17 @@ public class StationService {
     private double getAverageDepartingJourneyDistance(Station station) {
         List<Journey> departingJourneys = station.getDepartingJourneys();
         double averageDistance = departingJourneys.stream()
+                .mapToDouble(Journey::getCoveredDistance)
+                .average()
+                .orElse(0.0);
+
+        // Round to 2 decimal places
+        return Math.round(averageDistance * 100.0) / 100.0;
+    }
+
+    private double getAverageReturningJourneyDistance(Station station) {
+        List<Journey> returningJourneys = station.getReturningJourneys();
+        double averageDistance = returningJourneys.stream()
                 .mapToDouble(Journey::getCoveredDistance)
                 .average()
                 .orElse(0.0);
