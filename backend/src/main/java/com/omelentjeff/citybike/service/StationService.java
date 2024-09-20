@@ -43,7 +43,13 @@ public class StationService {
     @Cacheable(value = "station", key = "#id")
     public StationDTO getStationById(long id) {
         Station tempStation = stationRepository.findById(id).orElseThrow(() -> new StationNotFoundException("Station with id: " + id + " not found"));
-        return stationMapper.toDTO(tempStation);
+
+        int totalJourneysStarting = getTotalNumberOfJourneysStarting(tempStation);
+
+        StationDTO stationDTO = stationMapper.toDTO(tempStation);
+        stationDTO.setNumberOfJourneysStarting(totalJourneysStarting);
+
+        return stationDTO;
     }
 
     public Page<StationDTO> searchStations(String name, String address, Pageable pageable) {
@@ -54,5 +60,9 @@ public class StationService {
                 .collect(Collectors.toList());
 
         return new PageImpl<>(stationDTOs, pageable, stationPage.getTotalElements());
+    }
+
+    private int getTotalNumberOfJourneysStarting(Station station) {
+        return station.getDepartingJourneys().size();
     }
 }
