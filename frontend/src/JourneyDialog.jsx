@@ -55,7 +55,7 @@ export default function JourneyDialog({ journey, text }) {
       <Button
         variant="outlined"
         onClick={handleClickOpen}
-        sx={{ backgroundColor: "blue", color: "white" }}
+        //sx={{ backgroundColor: "blue", color : "white" }}
       >
         {text}
       </Button>
