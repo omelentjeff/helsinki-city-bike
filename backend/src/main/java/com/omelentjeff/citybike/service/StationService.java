@@ -45,9 +45,13 @@ public class StationService {
         Station tempStation = stationRepository.findById(id).orElseThrow(() -> new StationNotFoundException("Station with id: " + id + " not found"));
 
         int totalJourneysStarting = getTotalNumberOfJourneysStarting(tempStation);
+        int totalJourneysEnding = getTotalNumberOfJourneysReturning(tempStation);
+        double averageDepartingJourneysDistance = getAverageDepartingJourneyDistance(tempStation);
 
         StationDTO stationDTO = stationMapper.toDTO(tempStation);
         stationDTO.setNumberOfJourneysStarting(totalJourneysStarting);
+        stationDTO.setNumberOfJourneysReturning(totalJourneysEnding);
+        stationDTO.setAverageReturningJourneyDistance(averageDepartingJourneysDistance);
 
         return stationDTO;
     }
@@ -64,5 +68,20 @@ public class StationService {
 
     private int getTotalNumberOfJourneysStarting(Station station) {
         return station.getDepartingJourneys().size();
+    }
+
+    private int getTotalNumberOfJourneysReturning(Station station) {
+        return station.getReturningJourneys().size();
+    }
+
+    private double getAverageDepartingJourneyDistance(Station station) {
+        List<Journey> departingJourneys = station.getDepartingJourneys();
+        double averageDistance = departingJourneys.stream()
+                .mapToDouble(Journey::getCoveredDistance)
+                .average()
+                .orElse(0.0);
+
+        // Round to 2 decimal places
+        return Math.round(averageDistance * 100.0) / 100.0;
     }
 }
