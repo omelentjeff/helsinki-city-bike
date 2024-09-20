@@ -52,7 +52,11 @@ export default function JourneyDialog({ journey, text }) {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        sx={{ backgroundColor: "blue", color: "white" }}
+      >
         {text}
       </Button>
       <BootstrapDialog
