@@ -1,5 +1,3 @@
-### Note: This is still a work in progress.
-
 # helsinki-city-bike
 App for viewing Helsinki City Bike journey data.
 
